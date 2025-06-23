@@ -23,13 +23,20 @@ public class Metadata {
 		this.artist = tag.getFirst(FieldKey.ARTIST);
 		this.year = tag.getFirst(FieldKey.YEAR);
 	}
-	public String getTitle() {
-		return title;
-	}
-	public String getArtist() {
-		return artist;
-	}
-	public String getYear() {
-		return year;
+	public String getField(String fieldName) throws IllegalArgumentException {
+		if (fieldName == null) {
+			throw new IllegalArgumentException("Field name cannot be null");
+		}
+		
+		switch (fieldName.toUpperCase()) {
+		case "TITLE":
+			return title;
+		case "ARTIST":
+			return artist;
+		case "YEAR":
+			return year;
+		default:
+			throw new IllegalArgumentException("Unknown field: " + fieldName);
+		}
 	}
 }
