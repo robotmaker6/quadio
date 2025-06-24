@@ -11,6 +11,7 @@ public class Metadata {
 	private String title;
 	private String artist;
 	private String year;
+	private String album;
 	public Metadata(String filename) {
 		this.filename = filename;
 	}
@@ -22,6 +23,7 @@ public class Metadata {
 		this.title = tag.getFirst(FieldKey.TITLE);
 		this.artist = tag.getFirst(FieldKey.ARTIST);
 		this.year = tag.getFirst(FieldKey.YEAR);
+		this.album = tag.getFirst(FieldKey.ALBUM);
 	}
 	public String getField(String fieldName) throws UnknownFieldException {
 		if (fieldName == null) {
@@ -35,6 +37,8 @@ public class Metadata {
 			return artist;
 		case "YEAR":
 			return year;
+		case "ALBUM":
+			return album;
 		default:
 			throw new UnknownFieldException(fieldName);
 		}
