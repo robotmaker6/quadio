@@ -25,6 +25,16 @@
            String album = m.getField(Field.ALBUM);
        }
    }
+ - **Metadata Writing**
+   ```java
+   public class Main {
+       public static void main(String[] args) throws Exception {
+           Metadata m = new Metadata("path/to/your/mp3");
+           m.load();
+           m.setField(Field.TITLE, "test");
+       }
+   }
+     
  - **Sound playing**
    ```java
    public class Main {
