@@ -19,10 +19,10 @@
        public static void main(String[] args) throws Exception {
            Metadata m = new Metadata("path/to/your/mp3");
            m.load();
-           String title = m.getField("TITLE");
-           String artist = m.getField("ARTIST");
-           String year = m.getField("YEAR");
-           String album = m.getField("ALBUM");
+           String title = m.getField(Field.TITLE);
+           String artist = m.getField(Field.ARTIST);
+           String year = m.getField(Field.YEAR);
+           String album = m.getField(Field.ALBUM);
        }
    }
  - **Sound playing**
