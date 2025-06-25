@@ -25,22 +25,18 @@ public class Metadata {
 		this.year = tag.getFirst(FieldKey.YEAR);
 		this.album = tag.getFirst(FieldKey.ALBUM);
 	}
-	public String getField(String fieldName) throws UnknownFieldException {
-		if (fieldName == null) {
-			throw new UnknownFieldException("null");
-		}
-		
-		switch (fieldName.toUpperCase()) {
-		case "TITLE":
+	public String getField(Field f) throws UnknownFieldException {
+		switch (f) {
+		case TITLE:
 			return title;
-		case "ARTIST":
+		case ARTIST:
 			return artist;
-		case "YEAR":
+		case YEAR:
 			return year;
-		case "ALBUM":
+		case ALBUM:
 			return album;
 		default:
-			throw new UnknownFieldException(fieldName);
+			throw new UnknownFieldException(f.name());
 		}
 	}
 }
