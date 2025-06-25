@@ -1,42 +1,67 @@
 package com.quadio.metadata;
+
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.FieldKey;
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import org.jaudiotagger.tag.Tag;
+
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Metadata {
-	private String filename;
-	private String title;
-	private String artist;
-	private String year;
-	private String album;
-	public Metadata(String filename) {
-		this.filename = filename;
-	}
-	public void load() throws Exception {
-		Logger.getLogger("org.jaudiotagger").setLevel(Level.WARNING);
-		File file = new File(filename);
-		AudioFile audioFile = AudioFileIO.read(file);
-		Tag tag = audioFile.getTag();
-		this.title = tag.getFirst(FieldKey.TITLE);
-		this.artist = tag.getFirst(FieldKey.ARTIST);
-		this.year = tag.getFirst(FieldKey.YEAR);
-		this.album = tag.getFirst(FieldKey.ALBUM);
-	}
-	public String getField(Field f) throws UnknownFieldException {
-		switch (f) {
-		case TITLE:
-			return title;
-		case ARTIST:
-			return artist;
-		case YEAR:
-			return year;
-		case ALBUM:
-			return album;
-		default:
-			throw new UnknownFieldException(f.name());
-		}
-	}
+
+    private final String filename;
+
+    private AudioFile audioFile;
+    private Tag tag;
+    private String title;
+    private String artist;
+    private String year;
+    private String album;
+
+    public Metadata(String filename) {
+        this.filename = filename;
+    }
+
+    public void load() throws Exception {
+        Logger.getLogger("org.jaudiotagger").setLevel(Level.WARNING);
+
+        File file = new File(filename);
+        audioFile = AudioFileIO.read(file);
+        tag       = audioFile.getTagOrCreateAndSetDefault();   // ensures a writable tag
+
+        // cache the common fields
+        title  = tag.getFirst(FieldKey.TITLE);
+        artist = tag.getFirst(FieldKey.ARTIST);
+        year   = tag.getFirst(FieldKey.YEAR);
+        album  = tag.getFirst(FieldKey.ALBUM);
+    }
+    public String getField(Field f) throws UnknownFieldException {
+        switch (f) {
+            case TITLE:  return title;
+            case ARTIST: return artist;
+            case YEAR:   return year;
+            case ALBUM:  return album;
+            default:     throw new UnknownFieldException(f.name());
+        }
+    }
+    public void setField(Field f, String value) throws UnknownFieldException, Exception {
+        FieldKey key;
+
+        switch (f) {
+            case TITLE:  title  = value; key = FieldKey.TITLE;  break;
+            case ARTIST: artist = value; key = FieldKey.ARTIST; break;
+            case YEAR:   year   = value; key = FieldKey.YEAR;   break;
+            case ALBUM:  album  = value; key = FieldKey.ALBUM;  break;
+            default: throw new UnknownFieldException(f.name());
+        }
+
+        tag.setField(key, value);   // update jaudiotagger's Tag too
+    }
+
+    /** Persist any changes made by setField(...) back to disk. */
+    public void save() throws Exception {
+        AudioFileIO.write(audioFile);
+    }
 }
