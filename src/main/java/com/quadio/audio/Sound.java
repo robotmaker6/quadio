@@ -5,6 +5,7 @@ import java.io.InputStream;
 public class Sound {
 	private String filename;
 	private Player player;
+	private boolean isPlaying;
 	public Sound(String filename) {
 		this.filename = filename;
 	}
@@ -13,6 +14,7 @@ public class Sound {
 			InputStream is = new FileInputStream(filename);
 			player = new Player(is);
 			player.play();
+			isPlaying = true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -20,8 +22,12 @@ public class Sound {
 	public void stop() {
 		try {
 			player.close();
+			isPlaying = false;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	public boolean playing() {
+		return isPlaying;
 	}
 }
