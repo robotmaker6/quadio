@@ -10,28 +10,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Metadata {
-
     private final String filename;
-
     private AudioFile audioFile;
     private Tag tag;
     private String title;
     private String artist;
     private String year;
     private String album;
-
     public Metadata(String filename) {
         this.filename = filename;
     }
-
     public void load() throws Exception {
         Logger.getLogger("org.jaudiotagger").setLevel(Level.WARNING);
 
         File file = new File(filename);
         audioFile = AudioFileIO.read(file);
-        tag       = audioFile.getTagOrCreateAndSetDefault();   // ensures a writable tag
-
-        // cache the common fields
+        tag = audioFile.getTagOrCreateAndSetDefault();
         title  = tag.getFirst(FieldKey.TITLE);
         artist = tag.getFirst(FieldKey.ARTIST);
         year   = tag.getFirst(FieldKey.YEAR);
@@ -57,10 +51,8 @@ public class Metadata {
             default: throw new UnknownFieldException(f.name());
         }
 
-        tag.setField(key, value);   // update jaudiotagger's Tag too
+        tag.setField(key, value);
     }
-
-    /** Persist any changes made by setField(...) back to disk. */
     public void save() throws Exception {
         AudioFileIO.write(audioFile);
     }
