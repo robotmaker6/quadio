@@ -32,6 +32,7 @@
            Metadata m = new Metadata("path/to/your/mp3");
            m.load();
            m.setField(Field.TITLE, "test");
+           m.save();
        }
    }
      
@@ -40,7 +41,7 @@
    public class Main {
        public static void main(String[] args) {
            Sound s = new Sound("path/to/your/mp3");
-           sound.play();
+           s.play();
        }
    }
  - **That's it!**
