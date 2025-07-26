@@ -3,5 +3,6 @@ public enum Field {
 	TITLE,
 	ARTIST,
 	YEAR,
-	ALBUM;
+	ALBUM,
+	GENRE;
 }
