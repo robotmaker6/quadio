@@ -17,15 +17,9 @@ public class Metadata {
     private String artist;
     private String year;
     private String album;
-    private boolean loaded = false;
+    private String genre;
     public Metadata(String filename) {
         this.filename = filename;
-    }
-    private void ensureLoaded() throws Exception {
-    	if (!loaded) {
-    		load();
-    		loaded = true;
-    	}
     }
     public void load() throws Exception {
         Logger.getLogger("org.jaudiotagger").setLevel(Level.WARNING);
@@ -39,7 +33,6 @@ public class Metadata {
         album  = tag.getFirst(FieldKey.ALBUM);
     }
     public String getField(Field f) throws UnknownFieldException, Exception {
-    	ensureLoaded();
         switch (f) {
             case TITLE:  return title;
             case ARTIST: return artist;
@@ -50,12 +43,12 @@ public class Metadata {
     }
     public void setField(Field f, String value) throws UnknownFieldException, Exception {
         FieldKey key;
-        ensureLoaded();
         switch (f) {
             case TITLE:  title  = value; key = FieldKey.TITLE;  break;
             case ARTIST: artist = value; key = FieldKey.ARTIST; break;
             case YEAR:   year   = value; key = FieldKey.YEAR;   break;
             case ALBUM:  album  = value; key = FieldKey.ALBUM;  break;
+            case GENRE:  genre  = value; key = FieldKey.GENRE;  break;
             default: throw new UnknownFieldException(f.name());
         }
 
